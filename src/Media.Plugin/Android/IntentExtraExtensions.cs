@@ -3,12 +3,12 @@ using Android.Hardware;
 
 namespace Plugin.Media
 {
-	internal static class IntentExtraExtensions
+	static class IntentExtraExtensions
 	{
-		private const string extraFrontPre25 = "android.intent.extras.CAMERA_FACING";
-		private const string extraFrontPost25 = "android.intent.extras.LENS_FACING_FRONT";
-		private const string extraBackPost25 = "android.intent.extras.LENS_FACING_BACK";
-		private const string extraUserFront = "android.intent.extra.USE_FRONT_CAMERA";
+		const string extraFrontPre25 = "android.intent.extras.CAMERA_FACING";
+		const string extraFrontPost25 = "android.intent.extras.LENS_FACING_FRONT";
+		const string extraBackPost25 = "android.intent.extras.LENS_FACING_BACK";
+		const string extraUserFront = "android.intent.extra.USE_FRONT_CAMERA";
 
 		public static void UseFrontCamera(this Intent intent)
 		{
@@ -17,7 +17,10 @@ namespace Plugin.Media
 
 			// Android API 25 and up
 			intent.PutExtra(extraFrontPost25, 1);
-			intent.PutExtra(extraUserFront, true);
+
+			var isIntentNeeded = intent.GetBooleanExtra(extraUserFront, false);
+			if (isIntentNeeded)
+				intent.PutExtra(extraUserFront, true);
 		}
 
 		public static void UseBackCamera(this Intent intent)
@@ -27,7 +30,10 @@ namespace Plugin.Media
 
 			// Android API 25 and up
 			intent.PutExtra(extraBackPost25, 1);
-			intent.PutExtra(extraUserFront, false);
+
+			var isIntentNeeded = intent.GetBooleanExtra(extraUserFront, false);
+			if (isIntentNeeded)
+				intent.PutExtra(extraUserFront, false);
 		}
 	}
 }
